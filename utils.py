@@ -1,9 +1,9 @@
-import pandas as pd, os
+import pandas as pd, os, json
 
 def reverse(this_val, min_val, max_val):
     return (max_val + min_val) - this_val
 
-def score_surveys(data_file, scale_list, min_max_list, method='average'):
+def score_surveys(data_file, scale_list, method='average'):
 
     # Get the directory of the current script
     current_dir = os.path.dirname(os.path.realpath(__file__))
@@ -12,14 +12,21 @@ def score_surveys(data_file, scale_list, min_max_list, method='average'):
     data = pd.read_csv(data_file)
 
     # Loop over scales
-    for scale, (min_val, max_val) in zip(scale_list, min_max_list):
+    for scale in scale_list:
         
         # Construct the key file paths using the keys directory and scale names
-        key_file = os.path.join(current_dir, "keys", f"{scale}_key.csv")
-        key = pd.read_csv(key_file, index_col=0)
+        key_file = os.path.join(current_dir, "keys", f"{scale}_key.json")
+        key = pd.read_json(key_file)
+        min_val = key.iloc[0]['min_val']
+        max_val = key.iloc[0]['max_val']
+        key = key.drop(columns=['min_val', 'max_val'])
 
         # Find columns in data that start with "scale_"
         scale_columns = [col for col in data.columns if col.startswith(f"{scale}_")]
+
+        # reshape key if key and data do not match (possibly because extra columns in data)
+        if key.shape[1] != data[scale_columns].shape[1]:
+            key = key.reindex(columns=data[scale_columns].columns, fill_value=0)
         
         # Iterate over sub-scale names and compute scores for each
         for sub_scale_name in key.index:
@@ -43,7 +50,7 @@ def score_surveys(data_file, scale_list, min_max_list, method='average'):
     
     return data
 
-def create_key(key_dict, scale):
+def create_key(key_dict, scale, min_val, max_val):
     ''' Example Dictionary
     key_dict = {"Honesty-Humility": ["6", "30R", "54", "12R", "36", "60R", "18", "42R", "24R", "48R"],
                 "Sincerity": ["6", "30R", "54"],"Fairness": ["12R", "36", "60R"],"Greed-Avoidance": ["18", "42R"],"Modesty": ["24R", "48R"],
@@ -56,14 +63,16 @@ def create_key(key_dict, scale):
                 "Conscientiousness": ["2", "26R", "8", "32R", "14R", "38", "50", "20R", "44R", "56R"],
                 "Organization": ["2", "26R"],"Diligence": ["8", "32R"],"Perfectionism": ["14R", "38", "50"],"Prudence": ["20R", "44R", "56R"],
                 "Openness to Experience": ["1R", "25", "7", "31R", "13", "37", "49R", "19R", "43", "55R"],
-                "Aesthetic Appreciation": ["1R", "25"],"Inquisitiveness": ["7", "31R"],"Creativity": ["13", "37", "49R"],"Unconventionality": ["19R", "43", "55R"]}
+                "Aesthetic Appreciation": ["1R", "25"],"Inquisitiveness": ["7", "31R"],"Creativity": ["13", "37", "49R"],"Unconventionality": ["19R", "43", "55R"],
+                "Altruism": ["97", "98", "99R", "100R"]}
     '''
 
     # Get the directory of the current script
     current_dir = os.path.dirname(os.path.realpath(__file__))
 
-    # create the empty df with columns 1-60
-    df = pd.DataFrame(columns=[f'{scale}_'+str(i) for i in range(1, 61)])
+    # create the empty df with numbered columns
+    item_list = list(sorted({ele for val in key_dict.values() for ele in val}))
+    df = pd.DataFrame(columns=[f'{scale}_'+i.replace("R", "") for i in item_list])
 
     # iterate over the key:value pairs in the data dictionary
     for key, value in key_dict.items():
@@ -83,8 +92,14 @@ def create_key(key_dict, scale):
         df = df.append(row, ignore_index=True)
 
     df = df.set_index('subscale')
+    df.to_csv(os.path.join(current_dir, "keys", f"{scale}_key.csv"))
 
     # save the resulting df
-    df.to_csv(os.path.join(current_dir, "keys", f"{scale}_key.csv"))
+    df_dict = df.to_dict()
+    df_dict['min_val'] = min_val
+    df_dict['max_val'] = max_val
+
+    with open(os.path.join(current_dir, "keys", f"{scale}_key.json"), 'w') as outfile:
+        json.dump(df_dict, outfile)
 
     return df
