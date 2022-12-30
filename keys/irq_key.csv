@@ -1,0 +1,5 @@
+subscale,irq_1,irq_2,irq_3,irq_4,irq_5,irq_6,irq_7,irq_8,irq_9,irq_10,irq_11,irq_12,irq_13,irq_14,irq_15,irq_16
+Negative-Tendency,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0
+Negative-Efficacy,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0
+Positive-Tendency,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0
+Positive-Efficacy,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1

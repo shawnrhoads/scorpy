@@ -1,0 +1,8 @@
+subscale,qcae_1,qcae_2,qcae_3,qcae_4,qcae_5,qcae_6,qcae_7,qcae_8,qcae_9,qcae_10,qcae_11,qcae_12,qcae_13,qcae_14,qcae_15,qcae_16,qcae_17,qcae_18,qcae_19,qcae_20,qcae_21,qcae_22,qcae_23,qcae_24,qcae_25,qcae_26,qcae_27,qcae_28,qcae_29,qcae_30,qcae_31
+Cognitive Empathy,-1,0,1,1,1,1,0,0,0,0,0,0,0,0,1,1,0,1,1,1,1,1,0,1,1,1,1,1,0,1,1
+Perspective Taking,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,1,1,1,1,0,1,1,1,1,0,0,0,0
+Online Simulation,-1,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,1,1
+Affective Empathy,0,-1,0,0,0,0,1,1,1,1,1,1,1,1,0,0,-1,0,0,0,0,0,1,0,0,0,0,0,-1,0,0
+Emotion Contagion,0,0,0,0,0,0,0,1,1,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Proximal Responsivity,0,0,0,0,0,0,1,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0
+Peripheral Responsivity,0,-1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,-1,0,0,0,0,0,0,0,0,0,0,0,-1,0,0
