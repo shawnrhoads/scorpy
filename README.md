@@ -1,6 +1,12 @@
-# Scoring tools in Python (`scorpy`)
+# Scoring Tools in Python (`scorpy`)
 
 Tired of spending any amount of time scoring new surveys? Me too! So I created this package to help streamline this tedious task.
+
+## Installation
+
+```
+pip install git+https://github.com/shawnrhoads/scorpy
+```
 
 ## Usage
 
@@ -9,7 +15,7 @@ This package contains three main functions:
 - `score_surveys(data_file, scale_list)`: reads csv file (`data_file`) and scores a list of surveys to score (`scale_list`), outputs a new dataframe with scored surveys and respective subscales
 - `reverse(this_val, min_val, max_val)`: reverse scores items in `data` prior to scoring if needed
 
-Example:
+**Example:**
 ```{python}
 from scorpy import score_surveys
 
@@ -20,7 +26,7 @@ method = "average"            # method to score any subscale ("average" or "sum"
 scored_data = score_surveys(data_file, scale_list, min_max_list, method)
 ```
 
-### Current surveys
+### Current Surveys
 | Scale          | Number of Items       | Reference                 | Code      |
 |----------------|-----------------------|---------------------------|-----------|
 | DOSPERT        | 60 items              | Blais et al., 2006        | `dospert` |
