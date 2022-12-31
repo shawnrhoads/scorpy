@@ -19,11 +19,11 @@ This package contains three main functions:
 ```{python}
 from scorpy import score_surveys
 
-data_file = "data.csv"        # data to score
-scales = ["hexaco", "tripm"]  # key names that are available
-method = "average"            # method to score any subscale ("average" or "sum")
+data_file  = "data.csv"           # data to score
+scale_list = ["hexaco", "tripm"]  # key names that are available
+method     = "average"            # method to score any subscale ("average" or "sum")
 
-scored_data = score_surveys(data_file, scale_list, min_max_list, method)
+scored_data = score_surveys(data_file, scale_list, method)
 ```
 
 ### Current Surveys
