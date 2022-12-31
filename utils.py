@@ -10,6 +10,7 @@ def score_surveys(data_file, scale_list, method='average'):
 
     # Load data dataframe
     data = pd.read_csv(data_file)
+    data.columns = data.columns.str.lower()
 
     # Loop over scales
     for scale in scale_list:
@@ -26,6 +27,7 @@ def score_surveys(data_file, scale_list, method='average'):
 
         # reshape key if key and data do not match (possibly because extra columns in data)
         if key.shape[1] != data[scale_columns].shape[1]:
+            Warning(f'key {key.shape} and data {data[scale_columns].shape} shapes do not match for {scale}')
             key = key.reindex(columns=data[scale_columns].columns, fill_value=0)
         
         # Iterate over sub-scale names and compute scores for each
