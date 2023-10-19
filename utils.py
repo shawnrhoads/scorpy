@@ -9,8 +9,11 @@ def score_surveys(data_file, scale_list, method='average'):
     current_dir = os.path.dirname(os.path.realpath(__file__))
 
     # Load data dataframe
-    data = pd.read_csv(data_file)
-    data.columns = data.columns.str.lower()
+    if isinstance(data_file, pd.DataFrame):
+        data = data_file.copy()
+    elif isinstance(data_file, str):
+        data = pd.read_csv(data_file)
+        data.columns = data.columns.str.lower()
 
     # Loop over scales
     for scale in scale_list:
