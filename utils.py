@@ -3,7 +3,13 @@ import pandas as pd, os, json
 def reverse(this_val, min_val, max_val):
     return (max_val + min_val) - this_val
 
-def score_surveys(data_file, scale_list, method='average'):
+def score_surveys(data_file, scale_list, method='average', reverse_score=True):
+    '''
+    data_file: path to csv file or pandas dataframe
+    scale_list: list of scales to score
+    method: 'average' or 'sum'
+    reverse_score: True if raw data are not already reversed scored, or False if they are
+    '''
 
     # Get the directory of the current script
     current_dir = os.path.dirname(os.path.realpath(__file__))
@@ -40,9 +46,10 @@ def score_surveys(data_file, scale_list, method='average'):
             # Select relevant columns from data
             sub_scale_data = data[scale_columns].loc[:, sub_scale_items.astype(bool)]
             
-            # Reverse scores for items marked as -1
-            reverse_items = sub_scale_items[sub_scale_items == -1]
-            sub_scale_data.loc[:, reverse_items.index] = sub_scale_data[reverse_items.index].applymap(lambda x: reverse(x, min_val, max_val))
+            # Reverse scores for items marked as -1 
+            if reverse_score:
+                reverse_items = sub_scale_items[sub_scale_items == -1]
+                sub_scale_data.loc[:, reverse_items.index] = sub_scale_data[reverse_items.index].applymap(lambda x: reverse(x, min_val, max_val))
             
             # Compute sub-scale score using specified method
             if method == "average":
