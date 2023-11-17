@@ -19,7 +19,7 @@ def score_surveys(data_file, scale_list, method='average', reverse_score=True):
         data = data_file.copy()
     elif isinstance(data_file, str):
         data = pd.read_csv(data_file)
-        data.columns = data.columns.str.lower()
+        # data.columns = data.columns.str.lower()
 
     # Loop over scales
     for scale in scale_list:
@@ -32,7 +32,11 @@ def score_surveys(data_file, scale_list, method='average', reverse_score=True):
         key = key.drop(columns=['min_val', 'max_val'])
 
         # Find columns in data that start with "scale_"
-        scale_columns = [col for col in data.columns if col.startswith(f"{scale}_")]
+        scale_columns = []
+        try:
+            scale_columns = [col for col in data.columns if str(col).startswith(f"{scale}_")]
+        except Exception as e:
+            raise ValueError(f"Error with scale name: {scale}. Error message: {str(e)}")
 
         # reshape key if key and data do not match (possibly because extra columns in data)
         if key.shape[1] != data[scale_columns].shape[1]:
